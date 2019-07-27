@@ -1,11 +1,17 @@
 import { injectable } from 'inversify';
+import { User } from '../models/';
 
 export interface UserServiceContract {
-    helloWorld(id: number): string;
+    get(id: number): User;
 }
 @injectable()
 export class UserService implements UserServiceContract {
-    public helloWorld(id: number): string {
-        return `hello world  ${id}`;
+    public get(id: number): User {
+        // TODO: make the call to datastore to get value
+        const user = new User();
+        user.email = 'hello@example.com';
+        user.id = id;
+        user.name = 'Hello world';
+        return user;
     }
 }
