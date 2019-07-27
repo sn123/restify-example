@@ -9,7 +9,10 @@ export class UserController implements interfaces.Controller {
     public constructor(@inject('UserService') private userService: UserService) {}
 
     @Get('/:id')
-    public index(req: Request): string {
-        return this.userService.helloWorld(req.params.id);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public index(req: Request): any {
+        return {
+            hello: this.userService.helloWorld(req.params.id),
+        };
     }
 }

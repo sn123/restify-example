@@ -1,6 +1,5 @@
-import { Request } from 'restify';
 import { Controller, Get, interfaces } from 'inversify-restify-utils';
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
 @Controller('/campaign')
 @injectable()
