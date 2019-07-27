@@ -1,1 +1,1 @@
-export { UserService } from './user-service';
+export { UserService, UserServiceContract } from './user-service';
