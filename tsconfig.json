@@ -6,7 +6,6 @@
             "dom"
         ],
         "types": [
-            "inversify",
             "reflect-metadata"
         ],
         "baseUrl": ".",
