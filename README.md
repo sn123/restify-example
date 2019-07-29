@@ -1,18 +1,18 @@
 A basic TypeScript starter template on using restify, inversify, inversify-restify-utils, and Joi for building RESTful APIs in node.
 
-Key functionality
+**Overview
 
 * IoC Container using inversify
 * JOI Middleware and explicit validation
-* Annotated routes 
+* Annotated (aka decorators) routes in restify
 
-Steps:
+**Steps:
 
 * npm install
 * npm run build
 * npm start
 
-TODO: 
+**TODO: 
 * Unit tests
 * Introduce cache managers
 * Exception handling using bunyan or winston
