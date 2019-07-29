@@ -1,7 +1,7 @@
 {
     "name": "crm-web",
     "version": "1.0.0",
-    "description": "Web and APIs for CRM",
+    "description": "A Restify, Inversify starter",
     "main": "server.ts",
     "scripts": {
         "start": "npm run serve",
@@ -45,5 +45,5 @@
         "concurrently": "4.1.1"
     },
     "author": "Goavega Software",
-    "license": "ISC"
+    "license": "MIT"
 }
