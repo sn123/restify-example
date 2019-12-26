@@ -1,5 +1,5 @@
 {
-    "name": "crm-web",
+    "name": "restify-starter-ts",
     "version": "1.0.0",
     "description": "A Restify, Inversify starter",
     "main": "server.ts",
