@@ -1,18 +1,27 @@
-import { Request } from 'restify';
+import { ControllerBase } from './controller-base';
+import { CreateUserValidator } from '../validators/create-user-validator';
+import { PassportMiddleWare } from '../middleware';
+import { ResponseViewModel } from '../viewmodels/response-viewmodel';
+import { User } from '../models';
+import { User as UserModel } from '../../database/models';
+import { UserServiceContract } from '../services/user-service';
+import { WithUserRequest } from '../types/request-type';
 import { Controller, Get, interfaces, Post, Put } from 'inversify-restify-utils';
 import { inject, injectable } from 'inversify';
-import { UserServiceContract } from '../services/user-service';
-import { User } from '../models';
-import { CreateUserValidator } from '../validators/create-user-validator';
-import { ResponseViewModel } from '../viewmodels/response-viewmodel';
-import { Validator } from '../middleware/validator';
-import { ControllerBase } from './controller-base';
+import { Request } from 'restify';
 
-@Controller('/user', Validator)
+@Controller('/user')
 @injectable()
 export class UserController extends ControllerBase implements interfaces.Controller {
     public constructor(@inject('UserService') private readonly userService: UserServiceContract) {
         super();
+    }
+
+    @Get('/me', PassportMiddleWare.authenticate())
+    public async profile(request: WithUserRequest): Promise<ResponseViewModel<UserModel>> {
+        const userId = request.user.id;
+
+        return this.userService.profile(userId);
     }
 
     @Get('/:id')
@@ -49,7 +58,7 @@ export class UserController extends ControllerBase implements interfaces.Control
      * @param request
      */
     @Put('/:id')
-    public update(request: Request): ResponseViewModel<User | null> {
+    public async update(request: Request): Promise<ResponseViewModel<User | null> | null> {
         const validationResult = super.validate<User>(request, CreateUserValidator);
         if (validationResult) {
             return validationResult;
