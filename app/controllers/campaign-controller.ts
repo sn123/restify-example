@@ -6,7 +6,6 @@ import { injectable } from 'inversify';
 export class CampaignController implements interfaces.Controller {
     @Get('/')
     public index(): string {
-        throw new Error('test errors');
         return 'campaigns';
     }
 }
