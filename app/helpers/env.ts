@@ -32,18 +32,18 @@ class Env {
         const PER_PAGE = 100;
 
         // APP Meta Data
-        const APP_NAME = process.env.APP_NAME || 'BYJUS';
+        const APP_NAME = process.env.APP_NAME || 'Example';
         const ENVIRONMENT = process.env.ENVIRONMENT || 'LOCAL';
-        const BUGSNAG_API_KEY = process.env.BUGSNAG_API_KEY || 'abc'; // set some value i.e. abc otherwise server will be crashed
+
         const IS_BUGSNAG_ENABLED = process.env.IS_BUGSNAG_ENABLED
             ? process.env.IS_BUGSNAG_ENABLED.toLowerCase() === 'true'
                 ? true
                 : false
             : false;
 
+        const BUGSNAG_API_KEY = IS_BUGSNAG_ENABLED ? process.env.BUGSNAG_API_KEY || '' : '';
         const TIMEZONE_OFFSET = process.env.TIMEZONE_OFFSET ? parseInt(process.env.TIMEZONE_OFFSET) : 19800;
 
-        // ls activity data
         return {
             PORT,
             passportStrategy,

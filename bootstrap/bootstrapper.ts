@@ -28,11 +28,6 @@ export class Bootstrapper {
         new Promise(
             async (resolve, reject): Promise<void> => {
                 try {
-                    Bugsnag.start({
-                        apiKey: 'ef38e6e76834f9ebb8a0bfbc30621b3f',
-                        // plugins: [Bugsnag.getPlugin('restify')],
-                        // otherOptions: value
-                    });
                     await createConnection();
 
                     let container = new Container();
@@ -40,13 +35,21 @@ export class Bootstrapper {
                     Services.bootstrap(container);
                     // create server
                     let server = new InversifyRestifyServer(container, { defaultRoot: '/api' });
-                    const middleware = Bugsnag.getPlugin('restify');
-
                     let app = server.build();
-                    // This must be the first piece of middleware in the stack.
-                    // It can only capture errors in downstream middleware
-                    if (middleware) {
-                        app.pre(middleware.requestHandler);
+                    let bugSnagMiddleware;
+
+                    if (env.IS_BUGSNAG_ENABLED) {
+                        Bugsnag.start({
+                            apiKey: env.BUGSNAG_API_KEY,
+                            releaseStage: env.ENVIRONMENT,
+                        });
+                        bugSnagMiddleware = Bugsnag.getPlugin('restify');
+
+                        // This must be the first piece of middleware in the stack.
+                        // It can only capture errors in downstream middleware
+                        if (bugSnagMiddleware) {
+                            app.pre(bugSnagMiddleware.requestHandler);
+                        }
                     }
                     app.use(restify.plugins.acceptParser(app.acceptable));
                     app.use(
@@ -57,8 +60,8 @@ export class Bootstrapper {
                     app.use(restify.plugins.queryParser());
                     PassportMiddleWare.init();
                     app.listen(env.PORT);
-                    if (middleware) {
-                        app.on('restifyError', middleware.errorHandler);
+                    if (bugSnagMiddleware && env.IS_BUGSNAG_ENABLED) {
+                        app.on('restifyError', bugSnagMiddleware.errorHandler);
                     }
                     resolve();
                 } catch (error) {
